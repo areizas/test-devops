@@ -1,0 +1,32 @@
+name: Test pipeline
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello world!"
+
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.1.7
+
+      - run: |
+          ls -Al
+          pwd
+
+      - run: docker build -t areizasan/hello-world:julians .
+
+      - run: docker push areizasan/hello-world:julians
+
+      - name: Create infra with terraform
+        run: |
+          cd terraform/s3
+          terraform --version
+          echo "terraform init"
+          echo "terraform plan --auto-approve"
