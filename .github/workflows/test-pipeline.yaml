@@ -22,6 +22,12 @@ jobs:
           ls -Al
           pwd
 
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - run: docker build -t areizasan/hello-world:julians .
 
       - run: docker push areizasan/hello-world:julians
